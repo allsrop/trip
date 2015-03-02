@@ -13,7 +13,17 @@ $mux = new Mux;
 
 $mux->any('/', ['Mvc\Controller\Controller', 'run']);
 //*建立
-$mux->post('/create', ['Mvc\Controller\Controller', 'create']);
-
-$mux->post('/write', ['Mvc\Controller\Controller', 'write']);
+$mux->post('/insertPlan', ['Mvc\Controller\Controller', 'insertPlan']);
+//*瀏覽
+$mux->post('/browsePlan', ['Mvc\Controller\Controller', 'browsePlan']);
+//*修改
+$mux->post('/editPlan', ['Mvc\Controller\Controller', 'editPlan']);
+//*刪除
+$mux->post('/delPlan', ['Mvc\Controller\Controller', 'delPlan']);
+//*ctList
+$mux->post('/planLists', ['Mvc\Controller\Controller', 'planLists']);
+//*dtList
+$mux->post('/uniquePlanLists', ['Mvc\Controller\Controller', 'uniquePlanLists']);
+//*檢查
+$mux->post('/insertPlanCheck', ['Mvc\Controller\Controller', 'insertPlanCheck']);
 return $mux;
