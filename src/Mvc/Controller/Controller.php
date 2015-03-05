@@ -11,21 +11,26 @@ class Controller
     // 共用的物件
     private $Model = NULL;
 
+    private static $tripData = array();
     private $gtPost = NULL;
+    private $takePost = NULL;
     // 使用者選擇的動作
     private $action = 'insertPlan';
     // 建構函式
     // 初始化要執行的動作以及物件
     public function __construct()
     {
+        $this->takePost = array();
         $this->Model = new Model();
         $this->gtPost = $this->getPost();
+        $this->takePost = $this->takePost();
     }
 
     public final function run()
     {
         $this->{$this->action}();
         $this->planLists();
+
     }
     //*取得planPOST值
     public function getPost()
@@ -35,6 +40,10 @@ class Controller
             $_POST[$key] = trim($value);
         }
         $tripData = array();
+        if (isset($_POST['id'])) {
+            $tripData['id'] = $_POST['id'];
+        }
+
         if (isset($_POST['title'])) {
             $tripData['title'] = $_POST['title'];
         }
@@ -53,14 +62,19 @@ class Controller
         if (isset($_POST['description'])) {
             $tripData['description'] = $_POST['description'];
         }
-        if (isset($tripData)) {
-            return $tripData;
-        }else{
-            $sql_query = "select * from plan";
-            var_dump($sql_query);
-            $result = mysql_query($sql_query) or die('MySQL query error');
-            return $result;
+        return $tripData;
+    }
+    //*取得planPOST值
+    public function takePost()
+    {
+        $Result = $this->Model->planLists();
+        foreach ($Result as $key => $value)
+        {
+            if (is_string($value)) {
+                $Result[$key] = trim($value);
+            }
         }
+        return $Result[$key]['id'] ;
     }
     //*plan建立檢查
     public function insertPlanCheck(){
@@ -75,7 +89,7 @@ class Controller
                     echo "<h2 style='color:red'>資料重複,請重新輸入!</h2>";
 
                 } else {
-                   $this->Model->newPlan($this->gtPost);
+                    $this->Model->newPlan($this->gtPost);
                     echo "<h2>旅遊計畫：</h2>";
                     $this->uniquePlanLists();
                     echo "<h2 style='color:blue'>建立成功!</h2>";
@@ -97,15 +111,19 @@ class Controller
     }
     //*修改plan資料
     public function editPlan(){
-        $this->Model->delPlan($this->gtPost);
-        $this->uniquePlanLists();
-        //View::editPlan('index.php');
+        switch ($_POST['submit']) {
+            case '編輯':
+                $this->Model->delPlan($this->gtPost);
+                $this->uniquePlanLists();
+                View::editPlan('index.php');
+                break;
+        }
     }
     //*刪除plan資料
     public function delPlan(){
         $this->Model->delPlan($this->gtPost);
         $this->planLists();
-        //View::delPlan('index.php');
+        View::delPlan('index.php');
     }
     //*planList計畫總覽
     public function planLists(){
@@ -118,11 +136,11 @@ class Controller
         $thisResult = $this->Model->uniquePlanLists($title);
         View::uniquePlanLists($thisResult);
     }
-    //*單一計畫總覽
+    //*單一計畫Item總覽
     public function browsePlan(){
-        $PlanItemId = $this->Model->uniquePlanItemLists();
-        var_dump($this->Model->uniquePlanItemLists());
-        var_dump($PlanItemId);
-        View::browsePlan($PlanItemId);
+        $PlanId=$this->takePost;
+        $Result=$this->Model->uniquePlanItemLists($PlanId);
+        var_dump($Result);
+        View::browsePlan($Result);
     }
 }

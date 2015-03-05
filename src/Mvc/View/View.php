@@ -12,11 +12,16 @@ class View
         <head>
             <title></title>
             <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+            <link rel="stylesheet" href="/resources/demos/style.css">
         </head>
         <script type="text/javascript">
             $(function(){
+                $( "#datepicker1" ).datepicker({dateFormat: "yy-mm-dd"});
+                $( "#datepicker2" ).datepicker({dateFormat: "yy-mm-dd"});
                 $("#divShow").hide();
-
                 $('body').click(function(evt) {
                     if($(evt.target).parents("#divShow").length==0 &&
                         evt.target.id != "aaa" && evt.target.id != "divShow") {
@@ -96,7 +101,7 @@ class View
                     ~<input type="text" name="endDate" id="datepicker2"><br><br>
                     旅行人數：<input type="text" name="nop"><br><br>
                     遊記簡介：<textarea name="introduction" rows="4" cols="20"></textarea><br><br>
-                    描述：<input type="text" name="description"><br><br></p>
+                    描述：<input type="text" name="description"></p><br><br>
                 <input type="submit" name="submit" value="Go" formaction="createCheck"/>
             </blockquote>
         </form>
@@ -109,24 +114,24 @@ class View
     {
     }
     //*瀏覽計畫項目
-    public static function browsePlan($PlanItemId)
+    public static function browsePlan($Result)
     {
         $show ='<html>
         <head><meta charset="utf-8"/><title>browsePlanItem</title>
         </head>
         <body>
         <form action="/" method="post">';
-        foreach ($PlanItemId as $row) {
-            $show .= '<br><p>序:'.$row["id"];
-            $show .= '<p>-planid:'.$row["planid"];
-            $show .= '<p>-旅行日期:'.$row["starttime"].'～'.$row["endtime"];
-            $show .= '<p>-描述:'.$row["description"];
-            $show .= '<p>-預設成本:'.$row["nop"];
-            $show .= '<p>-成本:'.$row["introduction"];
-            $show .= '<p>-建立時間:'.$row["createon"];
-            $show .= '<p>-修改時間:'.$row["modifyon"].'<br><br>';
+        foreach ($Result as $row) {
+            $show .= '<p><br>序:'.$row["id"];
+            $show .= '<br>-planid:'.$row["planid"];
+            $show .= '<br>-旅行日期:'.$row["starttime"].'～'.$row["endtime"];
+            $show .= '<br>-描述:'.$row["description"];
+            $show .= '<br>-預設成本:'.$row["nop"];
+            $show .= '<br>-成本:'.$row["introduction"];
+            $show .= '<br>-建立時間:'.$row["createon"];
+            $show .= '<br>-修改時間:'.$row["modifyon"].'<br><br>';
             $show .= '<input type="submit" name="submit" value="編輯" formaction="editPlan"/> ';
-            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/><br><br>';
+            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/></p>';
         }
         echo $show;
      }
@@ -136,20 +141,20 @@ class View
         $show ='<html>
         <head><meta charset="utf-8"/><title>planLists</title>
         <link href="http://www.appelsiini.net/stylesheets/main2.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript"></script>
+        <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/tuupola" title="Atom feed">
         </head>
         <body>
         <form action="/" method="post">';
         foreach ($allResult as $row) {
-            $show .= '<br><br><p>序:'.$row["id"];
-            $show .= '<p>-遊記名稱:'.$row["title"];
-            $show .= '<p>-旅行日期:'.$row["startdate"].'～'.$row["enddate"];
-            $show .= '<p>-旅行人數:'.$row["nop"];
-            $show .= '<p>-遊記簡介:'.$row["introduction"];
-            $show .= '<p>-描述:'.$row["description"];
-            $show .= '<p><input type="submit" name="submit" value="瀏覽" formaction="browsePlan"/> ';
+            $show .= '<p><br><br>序:'.$row["id"];
+            $show .= '<br/>-遊記名稱:<span class="id" >'.$row["title"].'</span>';
+            $show .= '<br/>-旅行日期:'.$row["startdate"].'～'.$row["enddate"];
+            $show .= '<br/>-旅行人數:'.$row["nop"];
+            $show .= '<br/>-遊記簡介:'.$row["introduction"];
+            $show .= '<br/>-描述:'.$row["description"];
+            $show .= '<br/><input type="submit" name="submit" value="瀏覽" formaction="browsePlan"/> ';
             $show .= '<input type="submit" name="submit" value="編輯" formaction="editPlan"/> ';
-            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/>';
+            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/></p>';
         }
         '</form>';
         echo $show;
@@ -159,12 +164,26 @@ class View
     {
         $show ='<html>
         <head><meta charset="utf-8"/><title>uniquePlanLists</title>
+        <meta name="generator" content="Mephisto">
+        <link href="http://www.appelsiini.net/stylesheets/main2.css" rel="stylesheet" type="text/css">
+        <link rel="alternate" type="application/atom+xml" href="http://feeds.feedburner.com/tuupola" title="Atom feed">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jquery.jeditable.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+        $(function() {
+           $(".editable_textarea").editable("http://www.appelsiini.net/projects/jeditable/php/save.php", {
+              submitdata: { _method: "put" },
+              select : true,
+              cssclass : "editable"
+          });
+        });
+        </script>
         </head>
         <body>
         <form action="/" method="post">';
             foreach ($thisResult as $row) {
-                $show .= '<br>序:'.$row["id"];
-                $show .= '<br>-遊記名稱:'.$row["title"];
+                $show .= '<br>序:<div class="editable_textarea" id="paragraph_1" title="滑鼠點此可編輯..." style="">'.$row["id"].'</div>';
+                $show .= '<br>-遊記名稱:<div class="editable_textarea" id="paragraph_1" title="滑鼠點此可編輯..." style="">'.$row["title"].'</div>';
                 $show .= '<br>-旅行日期:'.$row["startdate"].'～'.$row["enddate"];
                 $show .= '<br>-旅行人數:'.$row["nop"];
                 $show .= '<br>-遊記簡介:'.$row["introduction"];

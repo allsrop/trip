@@ -1,6 +1,7 @@
 {
     "require": {
-        "corneltek/pux": "~1.5"
+        "corneltek/pux": "~1.5",
+        "twig/twig":"~1.0"
     },
     "autoload" : {
         "psr-4" : {

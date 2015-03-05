@@ -128,7 +128,7 @@ class Model
             $_startDate = $gtPost['startDate'];
             $_endDate = $gtPost['endDate'];
             $_description = $gtPost['description'];
-            $sql = self::$db->prepare("UPDATE trip SET title = ':title',
+            $sql = self::$db->prepare("UPDATE plan SET title = ':title',
                                                        introduction = ':introduction',
                                                        nop = ':nop',
                                                        startDate = ':startDate',
@@ -166,16 +166,17 @@ class Model
         }
     }
     //*單一計畫項目清單
-    public function uniquePlanItemLists()
+    public function uniquePlanItemLists($PlanId)
     {
         if ($this->status !== true) {
             return 'error';
         }
+        var_dump($PlanId);
         try {
-            $sql = self::$db->prepare("SELECT * FROM planitem");
+            $sql = self::$db->prepare("SELECT * FROM planitem where planid = '$PlanId'");
             if ($sql->execute()) {
+
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
-                var_dump($sql->fetchAll(\PDO::FETCH_ASSOC));
             }else{
                 return 'error in uniquePlanItemLists1!';
             }
