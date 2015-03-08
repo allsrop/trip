@@ -13,9 +13,9 @@ class Controller
 
     private static $tripData = array();
     private $gtPost = NULL;
-    private $takePost = NULL;
+    private $tkePost = NULL;
     // 使用者選擇的動作
-    private $action = 'insertPlan';
+    private $action = 'newPlan';
     // 建構函式
     // 初始化要執行的動作以及物件
     public function __construct()
@@ -29,7 +29,7 @@ class Controller
     public final function run()
     {
         $this->{$this->action}();
-        $this->planLists();
+        $this->listsPlan();
 
     }
     //*取得planPOST值
@@ -67,7 +67,7 @@ class Controller
     //*取得planPOST值
     public function takePost()
     {
-        $Result = $this->Model->planLists();
+        $Result = $this->Model->listsPlan();
         foreach ($Result as $key => $value)
         {
             if (is_string($value)) {
@@ -77,7 +77,8 @@ class Controller
         return $Result[$key]['id'] ;
     }
     //*plan建立檢查
-    public function insertPlanCheck(){
+    public function insertCheckPlan()
+    {
         switch ($_POST['submit']) {
             case 'Go':
                 if (empty($this->gtPost['title'])) {
@@ -85,13 +86,13 @@ class Controller
                     echo "<h4 style='color:#ff171a'>建立失敗,遊記名稱請勿空白!</h4>";
                 } elseif ($this->Model->insertPlanCheck($this->gtPost)) {
                     $_SESSION["title"]=$this->gtPost['title'];
-                    $this->insertPlan();
+                    $this->newPlan();
                     echo "<h2 style='color:red'>資料重複,請重新輸入!</h2>";
 
                 } else {
                     $this->Model->newPlan($this->gtPost);
                     echo "<h2>旅遊計畫：</h2>";
-                    $this->uniquePlanLists();
+                    $this->uniqueListsPlan();
                     echo "<h2 style='color:blue'>建立成功!</h2>";
                 }
                 break;
@@ -106,41 +107,66 @@ class Controller
         }
     }
     //*建立plan資料
-    public function insertPlan(){
-        View::insertPlan('index.php');
+    public function newPlan()
+    {
+        View::newPlan('index.php');
     }
     //*修改plan資料
-    public function editPlan(){
+    public function editPlan()
+    {
         switch ($_POST['submit']) {
             case '編輯':
                 $this->Model->delPlan($this->gtPost);
-                $this->uniquePlanLists();
+                $this->uniqueListsPlan();
                 View::editPlan('index.php');
                 break;
         }
     }
     //*刪除plan資料
-    public function delPlan(){
+    public function delPlan()
+    {
         $this->Model->delPlan($this->gtPost);
-        $this->planLists();
+        $this->listsPlan();
         View::delPlan('index.php');
     }
     //*planList計畫總覽
-    public function planLists(){
-        $Result = $this->Model->planLists();
-        View::planLists($Result);
+    public function listsPlan()
+    {
+        $Result = $this->Model->listsPlan();
+        View::listsPlan($Result);
     }
     //*uniquePlanLists單一計畫瀏覽
-    public function uniquePlanLists(){
+    public function uniqueListsPlan()
+    {
         $title=$this->gtPost['title'];
-        $thisResult = $this->Model->uniquePlanLists($title);
-        View::uniquePlanLists($thisResult);
+        $thisResult = $this->Model->uniqueListsPlan($title);
+        View::uniqueListsPlan($thisResult);
     }
     //*單一計畫Item總覽
-    public function browsePlan(){
+    public function listsItem()
+    {
         $PlanId=$this->takePost;
         $Result=$this->Model->uniquePlanItemLists($PlanId);
         var_dump($Result);
-        View::browsePlan($Result);
+        View::listsItem($Result);
+    }
+
+    public function testPlanLists()
+    {
+        return View::render($this->Model->planLists());
+    }
+
+    public function testNewPlan()
+    {
+        return View::render(array('success' => $this->Model->newPlan($this->gtPost)));
+    }
+
+    public function testEditPlan()
+    {
+        return View::render(array('success' => $this->Model->editPlan($this->takePost)));
+    }
+    public function testDelPlan()
+    {
+        return View::render(array('success' => $this->Model->delPlan($this->takePost)));
     }
 }

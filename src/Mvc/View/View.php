@@ -4,8 +4,14 @@ namespace Mvc\View;
 class View
 {
     public $result = null;
+
+    public static function render($data)
+    {
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+
     //*建立計畫
-    public static function insertPlan()
+    public static function newPlan()
     {
         ?>
     <html>
@@ -51,15 +57,15 @@ class View
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
-                            <option value="5">6</option>
-                            <option value="5">7</option>
-                            <option value="5">8</option>
-                            <option value="5">9</option>
-                            <option value="5">10</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
                         </select></td><br><br>
                     遊記簡介：<textarea name="introduction" rows="4" cols="20" style='color:#78788a'>輸入你想要寫的內容...</textarea><br><br>
                     描述：<input type="text" name="description"><br><br></p>
-                    <input type="submit" name="submit" value="Go" formaction="insertPlanCheck"/>
+                    <input type="submit" name="submit" value="Go" formaction="/insertCheck"/>
                     </blockquote>
                 </div>
         </form>
@@ -114,7 +120,7 @@ class View
     {
     }
     //*瀏覽計畫項目
-    public static function browsePlan($Result)
+    public static function listsItem($Result)
     {
         $show ='<html>
         <head><meta charset="utf-8"/><title>browsePlanItem</title>
@@ -130,13 +136,13 @@ class View
             $show .= '<br>-成本:'.$row["introduction"];
             $show .= '<br>-建立時間:'.$row["createon"];
             $show .= '<br>-修改時間:'.$row["modifyon"].'<br><br>';
-            $show .= '<input type="submit" name="submit" value="編輯" formaction="editPlan"/> ';
-            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/></p>';
+            $show .= '<input type="submit" name="submit" value="編輯" formaction="plan/edit"/> ';
+            $show .= '<input type="submit" name="submit" value="刪除" formaction="plan/del"/></p>';
         }
         echo $show;
      }
     //*計畫清單
-    public static function planLists($allResult)
+    public static function listsPlan($allResult)
     {
         $show ='<html>
         <head><meta charset="utf-8"/><title>planLists</title>
@@ -152,15 +158,15 @@ class View
             $show .= '<br/>-旅行人數:'.$row["nop"];
             $show .= '<br/>-遊記簡介:'.$row["introduction"];
             $show .= '<br/>-描述:'.$row["description"];
-            $show .= '<br/><input type="submit" name="submit" value="瀏覽" formaction="browsePlan"/> ';
-            $show .= '<input type="submit" name="submit" value="編輯" formaction="editPlan"/> ';
-            $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/></p>';
+            $show .= '<br/><input type="submit" name="submit" value="瀏覽" formaction="listsItem"/> ';
+            $show .= '<input type="submit" name="submit" value="編輯" formaction="plan/edit"/> ';
+            $show .= '<input type="submit" name="submit" value="刪除" formaction="plan/del"/></p>';
         }
         '</form>';
         echo $show;
     }
     //*單一計畫清單
-    public static function uniquePlanLists($thisResult)
+    public static function uniqueListsPlan($thisResult)
     {
         $show ='<html>
         <head><meta charset="utf-8"/><title>uniquePlanLists</title>
@@ -188,9 +194,9 @@ class View
                 $show .= '<br>-旅行人數:'.$row["nop"];
                 $show .= '<br>-遊記簡介:'.$row["introduction"];
                 $show .= '<br>-描述:'.$row["description"].'<br><br>';
-                $show .= '<input type="submit" name="submit" value="瀏覽" formaction="browsePlan"/> ';
-                $show .= '<input type="submit" name="submit" value="編輯" formaction="editPlan"/> ';
-                $show .= '<input type="submit" name="submit" value="刪除" formaction="delPlan"/><br><br>';
+                $show .= '<input type="submit" name="submit" value="瀏覽" formaction="planItem/lists"/> ';
+                $show .= '<input type="submit" name="submit" value="編輯" formaction="plan/edit"/> ';
+                $show .= '<input type="submit" name="submit" value="刪除" formaction="plan/del"/><br><br>';
             }
             echo $show;
     }

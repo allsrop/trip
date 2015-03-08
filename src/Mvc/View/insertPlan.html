@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+</head>
+<script type="text/javascript">
+  $(function(){
+    $( "#datepicker1" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( "#datepicker2" ).datepicker({dateFormat: "yy-mm-dd"});
+    $("#divShow").hide();
+    $('body').click(function(evt) {
+      if($(evt.target).parents("#divShow").length==0 &&
+          evt.target.id != "aaa" && evt.target.id != "divShow") {
+        $('#divShow').hide();
+      }
+    });
+  });
+</script>
+<body>
+<form action="/check" method="post">
+
+  <h2 style='color:#8a2f12' id="aaa" name="aaa" onclick="$('#divShow').show();" href="#">建立旅遊計畫</h2>
+  <div id="divShow" name="divShow" blockquote style="color:#000000;
+                font-size:13px;
+                background-color:#ffc991;
+                margin-left:15px;
+                margin-right:0px;-webkit-box-shadow:#333333 4px 4px 6px;
+                padding:10px;
+                border:1px dashed #aabbcc;">
+    <p style='color:#1b16da'>遊記名稱(*)：<input type="text" name="title"><br><br>
+      旅行日期：<input type="text" name="startDate" id="datepicker1">
+      ~<input type="text" name="endDate" id="datepicker2"><br><br>
+    <td>旅行人數:</td>
+    <td><select size="1" name="nop">
+      <option value="1" selected>1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select></td><br><br>
+    遊記簡介：<textarea name="introduction" rows="4" cols="20" style='color:#78788a'>輸入你想要寫的內容...</textarea><br><br>
+    描述：<input type="text" name="description"><br><br></p>
+    <input type="submit" name="submit" value="Go" formaction="insertPlanCheck"/>
+    </blockquote>
+  </div>
+</form>
+</body>
+</html>

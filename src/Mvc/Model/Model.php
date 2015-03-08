@@ -52,24 +52,8 @@ class Model
         }
     }
     //*計畫清單
-    public function planLists(){
-        if ($this->status !== true) {
-            return 'error';
-        }
-        try {
-            $this->tripList = array();
-            $sql = self::$db->prepare("SELECT * FROM plan");
-            if ($sql->execute()) {
-                $this->tripList=$sql;
-                return $sql->fetchAll(\PDO::FETCH_ASSOC);
-            }else{
-                return 'error in lists!';
-            }
-        }catch(\PDOException $e){
-            return 'error in lists!';
-        }
-    }
-    public function planListss(){
+    public function listsPlan()
+    {
         if ($this->status !== true) {
             return 'error';
         }
@@ -87,7 +71,7 @@ class Model
         }
     }
     //*單一計畫清單
-    public function uniquePlanLists($title){
+    public function uniqueListsPlan($title){
         if ($this->status !== true) {
             return 'error';
         }
@@ -175,7 +159,6 @@ class Model
         try {
             $sql = self::$db->prepare("SELECT * FROM planitem where planid = '$PlanId'");
             if ($sql->execute()) {
-
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
                 return 'error in uniquePlanItemLists1!';
