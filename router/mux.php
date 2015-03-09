@@ -4,21 +4,21 @@
     0 => 
     array (
       0 => false,
-      1 => '/uniquePlanLists',
+      1 => '/plan/uniqueLists',
       2 => 
       array (
         0 => 'Mvc\\Controller\\Controller',
-        1 => 'uniquePlanLists',
+        1 => 'uniqueListsPlan',
       ),
       3 => 
       array (
-        'method' => 2,
+        'method' => 1,
       ),
     ),
     1 => 
     array (
       0 => false,
-      1 => '/insertPlanCheck',
+      1 => '/plan/insertCheck',
       2 => 
       array (
         0 => 'Mvc\\Controller\\Controller',
@@ -32,49 +32,21 @@
     2 => 
     array (
       0 => false,
-      1 => '/browsePlan',
+      1 => '/plan/lists',
       2 => 
       array (
         0 => 'Mvc\\Controller\\Controller',
-        1 => 'browsePlan',
+        1 => 'listsPlan',
       ),
       3 => 
       array (
-        'method' => 2,
+        'method' => 1,
       ),
     ),
     3 => 
     array (
       0 => false,
-      1 => '/insertPlan',
-      2 => 
-      array (
-        0 => 'Mvc\\Controller\\Controller',
-        1 => 'insertPlan',
-      ),
-      3 => 
-      array (
-        'method' => 2,
-      ),
-    ),
-    4 => 
-    array (
-      0 => false,
-      1 => '/planLists',
-      2 => 
-      array (
-        0 => 'Mvc\\Controller\\Controller',
-        1 => 'planLists',
-      ),
-      3 => 
-      array (
-        'method' => 2,
-      ),
-    ),
-    5 => 
-    array (
-      0 => false,
-      1 => '/editPlan',
+      1 => '/plan/edit',
       2 => 
       array (
         0 => 'Mvc\\Controller\\Controller',
@@ -85,10 +57,10 @@
         'method' => 2,
       ),
     ),
-    6 => 
+    4 => 
     array (
       0 => false,
-      1 => '/delPlan',
+      1 => '/plan/del',
       2 => 
       array (
         0 => 'Mvc\\Controller\\Controller',
@@ -99,7 +71,21 @@
         'method' => 2,
       ),
     ),
-    7 => 
+    5 => 
+    array (
+      0 => false,
+      1 => '/plan/new',
+      2 => 
+      array (
+        0 => 'Mvc\\Controller\\Controller',
+        1 => 'newPlan',
+      ),
+      3 => 
+      array (
+        'method' => 2,
+      ),
+    ),
+    6 => 
     array (
       0 => false,
       1 => '/',

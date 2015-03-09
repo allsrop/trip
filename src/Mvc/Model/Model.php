@@ -3,9 +3,7 @@ namespace Mvc\Model;
 
 class Model
 {
-
     private static $db = null;
-
     protected $status = false;
 
     public function __construct()
@@ -52,7 +50,8 @@ class Model
         }
     }
     //*計畫清單
-    public function planLists(){
+    public function listsPlan()
+    {
         if ($this->status !== true) {
             return 'error';
         }
@@ -63,53 +62,34 @@ class Model
                 $this->tripList=$sql;
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
-                return 'error in lists!';
+                return false;
             }
         }catch(\PDOException $e){
-            return 'error in lists!';
-        }
-    }
-    public function planListss(){
-        if ($this->status !== true) {
-            return 'error';
-        }
-        try {
-            $this->tripList = array();
-            $sql = self::$db->prepare("SELECT * FROM plan");
-            if ($sql->execute()) {
-                $this->tripList=$sql;
-                return $sql->fetchAll(\PDO::FETCH_ASSOC);
-            }else{
-                return 'error in lists!';
-            }
-        }catch(\PDOException $e){
-            return 'error in lists!';
+            return false;
         }
     }
     //*單一計畫清單
-    public function uniquePlanLists($title){
+    public function uniqueListsPlan($id){
         if ($this->status !== true) {
-            return 'error';
+            return false;
         }
         try {
-            $this->tripList = array();
-            $sql = self::$db->prepare("SELECT * FROM plan where title='".$title."'");
+            $sql = self::$db->prepare("SELECT * FROM plan where id='".$id."'");
             if ($sql->execute()) {
-                $this->tripList=$sql;
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
-                return 'error in lists1!';
+                return false;
             }
         }catch(\PDOException $e){
-            return 'error in lists2!';
+            return false;
         }
     }
     //*檢查建立資料是否已存在
-    public function  insertPlanCheck($gtPost){
+    public function  insertPlanCheck($id){
         $sql = self::$db->query("SELECT title FROM plan
-        where title='".$gtPost['title']."'");
+        where id='".$id."'");
         if ($sql->fetch()) {
-            return $gtPost['title'];
+            return $id;
         } else {
             return false;
         }
@@ -144,7 +124,7 @@ class Model
             $this->triprData = $sql;
             return ($sql->execute()) ? '成功' : '失敗';
         }catch(PDOException $e){
-            return 'error in editPlan!';
+            return false;
         }
     }
     //del
@@ -162,7 +142,7 @@ class Model
             $this->triprData = $sql;
             return ($sql->execute()) ? '成功' : '失敗';
         }catch(PDOException $e){
-            return 'error in delPlan!';
+            return false;
         }
     }
     //*單一計畫項目清單
@@ -175,7 +155,6 @@ class Model
         try {
             $sql = self::$db->prepare("SELECT * FROM planitem where planid = '$PlanId'");
             if ($sql->execute()) {
-
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
                 return 'error in uniquePlanItemLists1!';
